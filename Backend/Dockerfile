@@ -1,17 +1,18 @@
-# Use Java 17
 FROM eclipse-temurin:17-jdk-alpine
 
-# Set working directory
 WORKDIR /app
 
 # Copy Maven wrapper and pom
 COPY mvnw pom.xml ./
 COPY .mvn .mvn
 
+# Give execute permission to mvnw
+RUN chmod +x mvnw
+
 # Download dependencies
 RUN ./mvnw dependency:go-offline
 
-# Copy source
+# Copy source code
 COPY src src
 
 # Build the application
