@@ -6,20 +6,22 @@ WORKDIR /app
 COPY mvnw pom.xml ./
 COPY .mvn .mvn
 
-# Give execute permission to mvnw
+# Give execute permission
 RUN chmod +x mvnw
 
 # Download dependencies
 RUN ./mvnw dependency:go-offline
 
-# Copy source code
+# Copy source
 COPY src src
 
 # Build the application
 RUN ./mvnw clean package -DskipTests
 
-# Expose port
+# Rename jar to fixed name
+RUN mv target/*.jar app.jar
+
 EXPOSE 8080
 
-# Run the app
-CMD ["java", "-jar", "target/*.jar"]
+# Run application
+CMD ["java", "-jar", "app.jar"]
